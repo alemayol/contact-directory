@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
   Visualizador menu = Visualizador();
   int opcionMenu = -1;
 
-  GestorJSON::cargarArchivo("directorio.json", *directorio);
+  GestorJSON::cargarArchivo("directorio.json", *directorio, *tablaContactos);
 
   while (opcionMenu != 0) {
     menu.displayMenu();
@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 
       case 1: {
         // CRUD
-        menu.crudLoop(*directorio);
+        menu.crudLoop(*directorio, *tablaContactos);
         break;
       }
       case 2: {

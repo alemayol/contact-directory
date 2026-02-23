@@ -1,6 +1,7 @@
 #include "../../include/data/GestorJSON.h"
 #include "model/ArbolB.h"
 #include "model/Contact.h"
+#include "model/ContactList.h"
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>
@@ -12,8 +13,10 @@ bool GestorJSON::guardarArchivo(std::string nombreA, const ArbolB &directorio) {
 
   J["recientes"] = directorio.getRecientes();
 
-  directorio.performPreorderAction(
-      [&jArr](const Contact contacto) { jArr.push_back(contacto); });
+  directorio.performPreorderAction([&jArr](const Contact contacto) {
+    // std::cout << "Guardando email -> " << contacto.getEmail() << std::endl;
+    jArr.push_back(contacto);
+  });
 
   J["contactos"] = jArr;
 
@@ -27,7 +30,8 @@ bool GestorJSON::guardarArchivo(std::string nombreA, const ArbolB &directorio) {
   return false;
 }
 
-bool GestorJSON::cargarArchivo(std::string nombreA, ArbolB &tree) {
+bool GestorJSON::cargarArchivo(std::string nombreA, ArbolB &tree,
+                               ContactList &tablaHash) {
   std::ifstream file(nombreA);
 
   if (!file.is_open()) {
@@ -46,13 +50,14 @@ bool GestorJSON::cargarArchivo(std::string nombreA, ArbolB &tree) {
   for (auto &c : arr) {
     Contact contacto;
     from_json(c, contacto);
-    tree.insertarContacto(std::move(contacto));
+    tree.insertarContacto(contacto);
+    std::string key = contacto.getEmail();
+    tablaHash.insertarContacto(key, std::move(contacto));
   }
 
   for (auto &rec : j.at("recientes")) {
     Contact reciente;
     from_json(rec, reciente);
-    std::cout << "Añadiendo contacto: " << reciente.getNombre() << std::endl;
     tree.agregarRecientes(reciente);
   }
 

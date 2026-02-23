@@ -17,10 +17,7 @@ public:
   std::string getEmail() const;
   void setEmail(std::string email);
   friend void to_json(nlohmann::json &J, const Contact &contacto);
-  friend void from_json(const nlohmann::json &j, Contact &contacto) {
-    contacto.setNombre(j.at("nombre").get<std::string>());
-    contacto.setTelefono(j.at("telefono").get<std::string>());
-  }
+  friend void from_json(const nlohmann::json &j, Contact &contacto);
 
 private:
   std::string nombre;

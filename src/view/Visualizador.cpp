@@ -1,6 +1,9 @@
 #include "../../include/view/Visualizador.h"
+#include "data/GestorCSV.h"
+#include "data/GestorJSON.h"
 #include "model/ArbolB.h"
 #include "model/Contact.h"
+#include "model/ContactList.h"
 #include <ios>
 #include <iostream>
 #include <limits>
@@ -113,7 +116,7 @@ void Visualizador::mostrarContactos(std::vector<Contact> contactos) {
   }
 }
 
-void Visualizador::crudLoop(ArbolB &directorio) {
+void Visualizador::crudLoop(ArbolB &directorio, ContactList &tabla) {
   int opcion = -1;
 
   while (opcion != 0) {
@@ -150,6 +153,8 @@ void Visualizador::crudLoop(ArbolB &directorio) {
         Contact contacto = this->obtenerContacto();
 
         directorio.insertarContacto(contacto);
+        tabla.insertarContacto(contacto.getEmail(), contacto);
+        GestorJSON::guardarArchivo("directorio.json", directorio);
 
         std::cout << "Contacto agregado!" << std::endl;
         break;
@@ -170,25 +175,83 @@ void Visualizador::crudLoop(ArbolB &directorio) {
         Contact nuevoContacto = this->actualizarContacto(*contacto);
 
         directorio.actualizarContacto(nombre, nuevoContacto);
+        tabla.actualizarContacto(contacto->getEmail(), nuevoContacto);
+        GestorJSON::guardarArchivo("directorio.json", directorio);
 
         break;
       }
       case 3: {
         // Consultar contacto
-        std::cout << "Nombre del contacto: ";
-        std::string nombre;
-        std::cin >> nombre;
 
-        std::vector<Contact> encontrados = directorio.consultarContacto(nombre);
+        int eleccion = 0;
+        std::cout << "Criterio de busqueda: " << std::endl;
+        std::cout << "1. Nombre" << std::endl;
+        std::cout << "2. Email" << std::endl;
+        std::cout << "Opcion: ";
+        std::cin >> eleccion;
 
-        if (encontrados.size() == 0) {
-          std::cout << "No se encontraron contactos que coincidan con el "
-                       "nombre ingresado"
+        if (eleccion > 2 || eleccion < 1) {
+          std::cout << "Criterio no especificado. Elija una opcion en pantalla"
                     << std::endl;
           break;
         }
 
-        this->mostrarContactos(encontrados);
+        if (eleccion == 1) {
+          std::cout << "Nombre del contacto: ";
+          std::string nombre;
+          std::cin >> nombre;
+
+          if (std::cin.fail()) {
+            std::cin.clear();
+            opcion = -1;
+            std::cout << "Nombre invalido" << std::endl;
+
+            this->limpiarBuffer();
+            break;
+          }
+
+          std::vector<Contact> encontrados =
+              directorio.consultarContacto(nombre);
+
+          if (encontrados.size() == 0) {
+            std::cout << "No se encontraron contactos que coincidan con el "
+                         "nombre ingresado"
+                      << std::endl;
+            break;
+          }
+
+          this->mostrarContactos(encontrados);
+
+        } else if (eleccion == 2) {
+          std::cout << "Email del contacto: ";
+          std::string email;
+          std::cin >> email;
+
+          if (std::cin.fail()) {
+            std::cin.clear();
+            opcion = -1;
+            std::cout << "Email invalido" << std::endl;
+
+            this->limpiarBuffer();
+            break;
+          }
+
+          Contact *contacto = tabla.consultarContacto(email);
+
+          if (contacto == nullptr) {
+            std::cout << "Contacto no encontrado" << std::endl;
+            break;
+          } else {
+
+            printf("| %3s Nombre %3s| %3s Telefono %3s | %8s Email %9s|\n", "",
+                   "", "", "", "", "");
+
+            printf("| %-13s | ", contacto->getNombre().c_str());
+            printf(" %-15s | ", contacto->getTelefono().c_str());
+            printf(" %-22s |\n", contacto->getEmail().c_str());
+          }
+        }
+
         break;
       }
       case 4: {
@@ -205,6 +268,7 @@ void Visualizador::crudLoop(ArbolB &directorio) {
         } else {
           std::cout << "Contacto " << nombre << " eliminado" << std::endl;
         }
+        GestorJSON::guardarArchivo("directorio.json", directorio);
 
         std::cout << std::endl;
 

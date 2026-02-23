@@ -17,7 +17,8 @@ public:
   bool isEmpty() const;
   int hashing(std::string key);
   void insertarContacto(std::string key, Contact contacto);
-  Contact consultarContacto(std::string key);
+  Contact *consultarContacto(std::string key);
+  void actualizarContacto(std::string key, Contact contacto);
   void eliminarContacto(std::string key);
   void imprimirTabla();
 };

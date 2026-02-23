@@ -1,6 +1,7 @@
 #pragma once
 #include "model/ArbolB.h"
 #include "model/Contact.h"
+#include "model/ContactList.h"
 #define VISUALIZADOR_H
 
 #include <string>
@@ -14,5 +15,5 @@ public:
   void mostrarContactos(std::vector<Contact> contactos);
   std::string buscarPalabraClave();
   void limpiarBuffer() const;
-  void crudLoop(ArbolB &directorio);
+  void crudLoop(ArbolB &directorio, ContactList &tabla);
 };

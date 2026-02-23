@@ -4,6 +4,8 @@
 #include <iterator>
 #include <string>
 
+ContactList::ContactList() {}
+
 bool ContactList::isEmpty() const {
 
   int suma{};
@@ -60,6 +62,12 @@ void ContactList::insertarContacto(std::string key, Contact contacto) {
   return;
 }
 
+void ContactList::actualizarContacto(std::string key, Contact contacto) {
+
+  eliminarContacto(key);
+  insertarContacto(contacto.getEmail(), contacto);
+}
+
 void ContactList::eliminarContacto(std::string key) {
   int hashValue = hashing(key);
 
@@ -91,6 +99,26 @@ void ContactList::eliminarContacto(std::string key) {
   }
 
   return;
+}
+
+Contact *ContactList::consultarContacto(std::string key) {
+
+  for (int i{}; i < CLASES; i++) {
+
+    if (tabla[i].size() == 0)
+      continue; // Lista vacia
+
+    auto itrNodo = tabla[i].begin();
+
+    for (; itrNodo != tabla[i].end(); itrNodo++) {
+
+      if (itrNodo->first == key) {
+        return &itrNodo->second;
+      }
+    }
+  }
+
+  return nullptr;
 }
 
 void ContactList::imprimirTabla() {

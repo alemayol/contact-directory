@@ -10,8 +10,10 @@ Contact::Contact() {}
 Contact::Contact(std::string nombre, std::string telefono, std::string email)
     : expReg("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+") {
 
-  if (!(nombre.length() && telefono.length() && email.length()))
+  if (!(nombre.length() && telefono.length() && email.length())) {
+    std::cout << "Campos vacios" << std::endl;
     throw std::exception();
+  }
 
   for (int letra{}; letra < nombre.length(); letra++) {
 
@@ -87,9 +89,12 @@ std::string Contact::getEmail() const { return this->email; }
 
 void Contact::setEmail(std::string email) {
 
-  bool emailValido = std::regex_match(email, expReg);
+  std::regex pattern("(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+");
+
+  bool emailValido = std::regex_match(email, pattern);
 
   if (!emailValido) {
+    std::cout << "Email invalido" << std::endl;
     throw std::exception();
   }
 
@@ -114,9 +119,8 @@ void to_json(nlohmann::json &J, const Contact &contacto) {
                      {"email", contacto.getEmail()}};
 }
 
-/*
 void from_json(const nlohmann::json &j, Contact &contacto) {
   contacto.setNombre(j.at("nombre").get<std::string>());
   contacto.setTelefono(j.at("telefono").get<std::string>());
+  contacto.setEmail(j.at("email").get<std::string>());
 }
-*/
