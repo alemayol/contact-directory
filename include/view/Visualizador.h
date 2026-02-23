@@ -4,7 +4,6 @@
 #include "model/ContactList.h"
 #define VISUALIZADOR_H
 
-#include <string>
 #include <vector>
 class Visualizador {
 public:
@@ -13,7 +12,6 @@ public:
   Contact obtenerContacto();
   Contact actualizarContacto(Contact contacto);
   void mostrarContactos(std::vector<Contact> contactos);
-  std::string buscarPalabraClave();
   void limpiarBuffer() const;
   void crudLoop(ArbolB &directorio, ContactList &tabla);
 };

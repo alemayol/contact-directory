@@ -37,6 +37,8 @@ void ArbolB::insertar(std::unique_ptr<NodoContacto> &raiz, Contact contacto) {
 
     raiz = std::make_unique<NodoContacto>(contacto);
     agregarRecientes(contacto);
+
+    std::cout << "Contacto agregado!" << std::endl;
     return;
   }
 

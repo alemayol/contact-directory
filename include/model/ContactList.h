@@ -11,11 +11,11 @@ class ContactList {
 private:
   static const int CLASES = 10;
   std::list<std::pair<std::string, Contact>> tabla[CLASES];
+  int hashing(std::string key);
 
 public:
   ContactList();
   bool isEmpty() const;
-  int hashing(std::string key);
   void insertarContacto(std::string key, Contact contacto);
   Contact *consultarContacto(std::string key);
   void actualizarContacto(std::string key, Contact contacto);

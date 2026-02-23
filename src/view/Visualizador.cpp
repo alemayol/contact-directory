@@ -156,7 +156,6 @@ void Visualizador::crudLoop(ArbolB &directorio, ContactList &tabla) {
         tabla.insertarContacto(contacto.getEmail(), contacto);
         GestorJSON::guardarArchivo("directorio.json", directorio);
 
-        std::cout << "Contacto agregado!" << std::endl;
         break;
       }
       case 2: {

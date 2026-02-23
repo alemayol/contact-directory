@@ -13,10 +13,8 @@ bool GestorJSON::guardarArchivo(std::string nombreA, const ArbolB &directorio) {
 
   J["recientes"] = directorio.getRecientes();
 
-  directorio.performPreorderAction([&jArr](const Contact contacto) {
-    // std::cout << "Guardando email -> " << contacto.getEmail() << std::endl;
-    jArr.push_back(contacto);
-  });
+  directorio.performPreorderAction(
+      [&jArr](const Contact contacto) { jArr.push_back(contacto); });
 
   J["contactos"] = jArr;
 
@@ -46,6 +44,8 @@ bool GestorJSON::cargarArchivo(std::string nombreA, ArbolB &tree,
   nlohmann::json arr = nlohmann::json::array();
 
   arr = j.at("contactos");
+
+  std::cout << "Cargando Archivos..." << std::endl;
 
   for (auto &c : arr) {
     Contact contacto;
