@@ -71,6 +71,18 @@ int main(int argc, char *argv[]) {
                   << std::endl;
         break;
       }
+      case 5: {
+        int num = directorio->numNodos();
+        std::cout << "El arbol tiene " << num << " nodos\n" << std::endl;
+        break;
+      }
+      case 6: {
+        int num = directorio->alturaArbol();
+        std::cout << "El arbol tiene una altura de " << num << "\n"
+                  << std::endl;
+        break;
+      }
+
       default:
         opcionMenu = -1;
         break;

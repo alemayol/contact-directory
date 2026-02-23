@@ -23,6 +23,8 @@ void Visualizador::displayMenu() {
   std::cout << "2. Contactos recientes" << std::endl;
   std::cout << "3. Mostrar todos los contactos" << std::endl;
   std::cout << "4. Exportar contactos a archivo CSV" << std::endl;
+  std::cout << "5. Numero de nodos en arbol" << std::endl;
+  std::cout << "6. Altura de arbol" << std::endl;
   std::cout << "0. Salir" << std::endl;
   std::cout << "Seleccione una opción: ";
 }
