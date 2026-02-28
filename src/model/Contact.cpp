@@ -27,8 +27,10 @@ Contact::Contact(std::string nombre, std::string telefono, std::string email)
   for (int num{}; num < telefono.length(); num++) {
 
     // Para el caso del telefono
-    if (!(telefono[num] >= 48 && telefono[num] <= 57)) {
-      std::cout << "Mal telefono" << std::endl;
+    if (!(telefono[num] >= 48 && telefono[num] <= 57 || telefono[num] == 32 ||
+          telefono[num] == 45)) {
+      std::cout << "No se pudo crear el usuario. Telefono invalido"
+                << std::endl;
       throw std::exception();
     }
   }
@@ -76,7 +78,8 @@ void Contact::setTelefono(std::string telefono) {
   for (int num{}; num < telefono.length(); num++) {
 
     // Para el caso del telefono
-    if (!(telefono[num] >= 48 && telefono[num] <= 57)) {
+    if (!(telefono[num] >= 48 && telefono[num] <= 57 || telefono[num] == 32 ||
+          telefono[num] == 45)) {
       std::cout << "Mal telefono" << std::endl;
       throw std::exception();
     }
@@ -103,9 +106,9 @@ void Contact::setEmail(std::string email) {
 
 void Contact::imprimirInfo() {
 
-  printf("| %-13s | ", this->getNombre().c_str());
-  printf(" %-15s | ", this->getTelefono().c_str());
-  printf(" %-22s |\n", this->getEmail().c_str());
+  printf("| %-25s | ", this->getNombre().c_str());
+  printf(" %-27s | ", this->getTelefono().c_str());
+  printf(" %-40s |\n", this->getEmail().c_str());
 
   return;
 }

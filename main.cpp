@@ -18,27 +18,32 @@ int main(int argc, char *argv[]) {
   Visualizador menu = Visualizador();
   int opcionMenu = -1;
 
-  GestorJSON::cargarArchivo("directorio.json", *directorio, *tablaContactos);
+  bool existeJson = GestorJSON::cargarArchivo("directorio.json", *directorio,
+                                              *tablaContactos);
 
-  while (opcionMenu != 0) {
-    menu.displayMenu();
-
-    std::cin >> opcionMenu;
-
-    if (std::cin.fail()) {
-      std::cin.clear();
-      opcionMenu = -1;
-      std::cout << "Opción no válida. Por favor, ingrese un número."
-                << std::endl;
-      ;
-
-      menu.limpiarBuffer();
-      continue;
+  try {
+    if (!existeJson) {
+      GestorCSV::cargarArchivo("prueba.csv", *directorio, *tablaContactos);
     }
 
-    menu.limpiarBuffer();
+    while (opcionMenu != 0) {
+      menu.displayMenu();
 
-    try {
+      std::cin >> opcionMenu;
+
+      if (std::cin.fail()) {
+        std::cin.clear();
+        opcionMenu = -1;
+        std::cout << "Opción no válida. Por favor, ingrese un número."
+                  << std::endl;
+        ;
+
+        menu.limpiarBuffer();
+        continue;
+      }
+
+      menu.limpiarBuffer();
+
       switch (opcionMenu) {
       case 0:
         break;
@@ -87,9 +92,9 @@ int main(int argc, char *argv[]) {
         opcionMenu = -1;
         break;
       }
-    } catch (std::exception &e) {
-      std::cout << "Ocurrio un error" << std::endl;
     }
+  } catch (std::exception &e) {
+    std::cout << "Ocurrio un error: " << e.what() << std::endl;
   }
 
   // delete directorio;

@@ -1,5 +1,6 @@
 #include "../../include/data/GestorCSV.h"
 #include "model/ArbolB.h"
+#include "model/ContactList.h"
 #include "model/NodoContacto.h"
 #include <cstdio>
 #include <fstream>
@@ -60,15 +61,51 @@ std::string GestorCSV::prepareTextCSV(std::string cad) {
   return "\"" + cad + "\"";
 }
 
-bool GestorCSV::cargarArchivo(std::string nombreA) {
+bool GestorCSV::cargarArchivo(std::string nombreA, ArbolB &directorio,
+                              ContactList &tablaHash) {
+
   std::ifstream file(nombreA);
 
-  if (!file.is_open())
+  if (!file.is_open()) {
+    std::cout << "No ha sido posible cargar el archivo con formato CSV"
+              << std::endl;
     return false;
+  }
 
-  nlohmann::json j;
+  std::string
+      linea; // Para guardar cada linea del archivo eje: nombre, tlf, email\n
 
-  file >> j;
+  std::getline(file, linea); // Obtenemos la primera linea pero no la utilizamos
+                             // ya que es la cabecera
+
+  while (std::getline(file, linea)) {
+
+    if (linea.empty())
+      continue;
+
+    std::stringstream tempLinea(linea);
+    std::string nombre, tlf, email;
+
+    if (std::getline(tempLinea, nombre, ',')) {
+
+      if (std::getline(tempLinea, tlf, ',')) {
+
+        if (std::getline(tempLinea, email)) {
+          if (!email.empty() || email.back() == '\r') {
+            email.pop_back(); // Por si hay un salto de linea proveniente de
+                              // Windows
+          }
+
+          // std::cout << nombre << " " << tlf << " " << email << std::endl;
+          Contact contacto = {nombre, tlf, email};
+          directorio.insertarContacto(contacto);
+          tablaHash.insertarContacto(email, std::move(contacto));
+        }
+      }
+    }
+  }
+
+  file.close();
 
   return true;
 }

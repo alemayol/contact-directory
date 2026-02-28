@@ -103,19 +103,24 @@ void ContactList::eliminarContacto(std::string key) {
 
 Contact *ContactList::consultarContacto(std::string key) {
 
-  for (int i{}; i < CLASES; i++) {
+  int hashValue = hashing(key);
 
-    if (tabla[i].size() == 0)
-      continue; // Lista vacia
+  auto &listaActual = tabla[hashValue];
+  auto itrNodo = std::begin(listaActual);
+  bool keyExists = false; // Asumimos que la llave no existe
 
-    auto itrNodo = tabla[i].begin();
+  for (; itrNodo != std::end(listaActual); itrNodo++) {
 
-    for (; itrNodo != tabla[i].end(); itrNodo++) {
-
-      if (itrNodo->first == key) {
-        return &itrNodo->second;
-      }
+    if (itrNodo->first == key) {
+      return &itrNodo->second;
     }
+  }
+
+  if (!keyExists) {
+
+    std::cout
+        << "[ADVERTENCIA] La llave no existe. Ningun contacto fue eliminado"
+        << std::endl;
   }
 
   return nullptr;

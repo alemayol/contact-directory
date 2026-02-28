@@ -20,9 +20,16 @@ bool GestorJSON::guardarArchivo(std::string nombreA, const ArbolB &directorio) {
 
   std::ofstream file(nombreA);
 
-  if (file.is_open()) {
-    file << J.dump(4); // El 4 es para identacion en el json
-    return true;
+  try {
+    if (file.is_open()) {
+      file << J.dump(
+          4, ' ', false,
+          nlohmann::json::error_handler_t::replace); // El 4 es para identacion
+                                                     // en el json
+      return true;
+    }
+  } catch (nlohmann::json::type_error &e) {
+    std::cerr << "No se pudo codificar el archivo: " << e.what() << std::endl;
   }
 
   return false;

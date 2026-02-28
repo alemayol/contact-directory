@@ -44,8 +44,8 @@ void ArbolB::insertar(std::unique_ptr<NodoContacto> &raiz, Contact contacto) {
 
   if (isEqualTo(contacto.getNombre(), raiz->contacto.getNombre())) {
     std::cout << "[ADVERTENCIA] El contacto ya existe. Si desea modificarlo "
-                 "elija la opcion de modificacion"
-              << std::endl;
+                 "elija la opcion de modificacion -> Nombre "
+              << contacto.getNombre() << std::endl;
     return;
   }
 
@@ -79,7 +79,7 @@ void ArbolB::consultar(std::unique_ptr<NodoContacto> &raiz,
         .clear(); // Solo mostraremos el contacto exacto encontrado
     this->ultimaBusqueda.push_back(raiz->contacto);
     this->agregarRecientes(raiz->contacto);
-    std::cout << "GOT IT" << std::endl;
+    // std::cout << "GOT IT" << std::endl;
     return;
   }
 
@@ -172,8 +172,9 @@ bool ArbolB::eliminar(std::unique_ptr<NodoContacto> &raiz, std::string nombre) {
   if (raiz == nullptr)
     return false;
 
-  std::cout << "Comparing: " << raiz->contacto.getNombre() << " -> " << nombre
-            << std::endl;
+  // std::cout << "Comparing: " << raiz->contacto.getNombre() << " -> " <<
+  // nombre
+  //           << std::endl;
 
   if (isLessThan(nombre, raiz->contacto.getNombre().c_str())) {
     eliminar(raiz->nodoI, nombre);
@@ -299,6 +300,7 @@ double ArbolB::distanciaLevenshtein(std::string base, std::string destino) {
     }
   }
 
+  /*
   for (int i = 0; i < a; i++) {
     if (i == 0)
       std::cout << " " << "X" << " ";
@@ -325,6 +327,7 @@ double ArbolB::distanciaLevenshtein(std::string base, std::string destino) {
   }
 
   std::cout << std::endl;
+*/
 
   // Porcentaje. e.g. cadena.length = 8 -> 8 - 5(operaciones) = 3 -> 3 / 8 *
   // 100%
@@ -346,7 +349,7 @@ double ArbolB::distanciaLevenshtein(std::string base, std::string destino) {
 void ArbolB::imprimirContactos() {
   std::cout << "\n--- Lista de Contactos (Orden Alfabetico) ---\n" << std::endl;
 
-  printf("| %3s Nombre %3s| %3s Telefono %3s | %8s Email %9s|\n", "", "", "",
+  printf("| %9s Nombre %9s| %9s Telefono %9s | %14s Email %21s|\n", "", "", "",
          "", "", "");
 
   imprimirContactos(this->nodoRaiz);

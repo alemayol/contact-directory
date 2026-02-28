@@ -7,6 +7,7 @@
 #include <ios>
 #include <iostream>
 #include <limits>
+#include <string>
 #include <vector>
 
 Visualizador::Visualizador() {}
@@ -35,30 +36,30 @@ Contact Visualizador::obtenerContacto() {
   std::string email;
 
   std::cout << "Nombre: ";
-  std::cin >> nombre;
+  std::getline(std::cin, nombre);
 
   if (std::cin.fail()) {
     std::cin.clear();
     std::cout << "Por favor, ingrese un nombre valido" << std::endl;
-    throw new std::exception();
+    throw std::exception();
   }
 
   std::cout << "Telefono: ";
-  std::cin >> tlf;
+  std::getline(std::cin, tlf);
 
   if (std::cin.fail()) {
     std::cin.clear();
     std::cout << "Por favor, ingrese un telefono valido" << std::endl;
-    throw new std::exception();
+    throw std::exception();
   }
 
   std::cout << "Email: ";
-  std::cin >> email;
+  std::getline(std::cin, email);
 
   if (std::cin.fail()) {
     std::cin.clear();
     std::cout << "Por favor, ingrese un email valido" << std::endl;
-    throw new std::exception();
+    throw std::exception();
   }
 
   Contact contacto = {nombre, tlf, email};
@@ -73,7 +74,7 @@ Contact Visualizador::actualizarContacto(Contact contacto) {
 
   std::cout << "Nombre Previo -> " << contacto.getNombre() << std::endl;
   std::cout << "Nombre: ";
-  std::cin >> nombre;
+  std::getline(std::cin, nombre);
 
   if (std::cin.fail()) {
     std::cin.clear();
@@ -83,7 +84,7 @@ Contact Visualizador::actualizarContacto(Contact contacto) {
 
   std::cout << "Telefono Previo -> " << contacto.getTelefono() << std::endl;
   std::cout << "Telefono: ";
-  std::cin >> tlf;
+  std::getline(std::cin, tlf);
 
   if (std::cin.fail()) {
     std::cin.clear();
@@ -93,7 +94,7 @@ Contact Visualizador::actualizarContacto(Contact contacto) {
 
   std::cout << "Email Previo -> " << contacto.getEmail() << std::endl;
   std::cout << "Email: ";
-  std::cin >> email;
+  std::getline(std::cin, email);
 
   if (std::cin.fail()) {
     std::cin.clear();
@@ -108,13 +109,13 @@ Contact Visualizador::actualizarContacto(Contact contacto) {
 
 void Visualizador::mostrarContactos(std::vector<Contact> contactos) {
 
-  printf("| %3s Nombre %3s| %3s Telefono %3s | %8s Email %9s|\n", "", "", "",
+  printf("| %9s Nombre %9s| %9s Telefono %9s | %14s Email %21s|\n", "", "", "",
          "", "", "");
 
   for (int i{}; i < contactos.size(); i++) {
-    printf("| %-13s | ", contactos[i].getNombre().c_str());
-    printf(" %-15s | ", contactos[i].getTelefono().c_str());
-    printf(" %-22s |\n", contactos[i].getEmail().c_str());
+    printf("| %-25s | ", contactos[i].getNombre().c_str());
+    printf(" %-27s | ", contactos[i].getTelefono().c_str());
+    printf(" %-40s |\n", contactos[i].getEmail().c_str());
   }
 }
 
@@ -164,7 +165,9 @@ void Visualizador::crudLoop(ArbolB &directorio, ContactList &tabla) {
         // Actualizar contacto
         std::cout << "Nombre del contacto: ";
         std::string nombre;
-        std::cin >> nombre;
+
+        std::getline(std::cin, nombre);
+
         Contact *contacto = directorio.existeContacto(nombre);
         if (!contacto) {
           std::cout << "El contacto no existe" << std::endl;
@@ -190,6 +193,7 @@ void Visualizador::crudLoop(ArbolB &directorio, ContactList &tabla) {
         std::cout << "2. Email" << std::endl;
         std::cout << "Opcion: ";
         std::cin >> eleccion;
+        limpiarBuffer();
 
         if (eleccion > 2 || eleccion < 1) {
           std::cout << "Criterio no especificado. Elija una opcion en pantalla"
@@ -200,7 +204,7 @@ void Visualizador::crudLoop(ArbolB &directorio, ContactList &tabla) {
         if (eleccion == 1) {
           std::cout << "Nombre del contacto: ";
           std::string nombre;
-          std::cin >> nombre;
+          std::getline(std::cin, nombre);
 
           if (std::cin.fail()) {
             std::cin.clear();
@@ -226,7 +230,7 @@ void Visualizador::crudLoop(ArbolB &directorio, ContactList &tabla) {
         } else if (eleccion == 2) {
           std::cout << "Email del contacto: ";
           std::string email;
-          std::cin >> email;
+          std::getline(std::cin, email);
 
           if (std::cin.fail()) {
             std::cin.clear();
@@ -244,12 +248,12 @@ void Visualizador::crudLoop(ArbolB &directorio, ContactList &tabla) {
             break;
           } else {
 
-            printf("| %3s Nombre %3s| %3s Telefono %3s | %8s Email %9s|\n", "",
-                   "", "", "", "", "");
+            printf("| %9s Nombre %9s| %3s Telefono %3s | %12s Email %23s|\n",
+                   "", "", "", "", "", "");
 
-            printf("| %-13s | ", contacto->getNombre().c_str());
+            printf("| %-25s | ", contacto->getNombre().c_str());
             printf(" %-15s | ", contacto->getTelefono().c_str());
-            printf(" %-22s |\n", contacto->getEmail().c_str());
+            printf(" %-40s |\n", contacto->getEmail().c_str());
           }
         }
 
@@ -260,7 +264,7 @@ void Visualizador::crudLoop(ArbolB &directorio, ContactList &tabla) {
 
         std::cout << "Nombre del contacto: ";
         std::string nombre;
-        std::cin >> nombre;
+        std::getline(std::cin, nombre);
 
         if (!directorio.eliminarContacto(nombre)) {
           std::cout << "[INFO] No se encontro ningun contacto. Ningun contacto "
