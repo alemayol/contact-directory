@@ -91,7 +91,7 @@ bool GestorCSV::cargarArchivo(std::string nombreA, ArbolB &directorio,
       if (std::getline(tempLinea, tlf, ',')) {
 
         if (std::getline(tempLinea, email)) {
-          if (!email.empty() || email.back() == '\r') {
+          if (!email.empty() && email.back() == '\r') {
             email.pop_back(); // Por si hay un salto de linea proveniente de
                               // Windows
           }

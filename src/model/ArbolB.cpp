@@ -71,29 +71,38 @@ void ArbolB::consultar(std::unique_ptr<NodoContacto> &raiz,
   if (raiz == nullptr)
     return;
 
-  double lvshteinResult =
-      distanciaLevenshtein(raiz->contacto.getNombre(), nombre);
+  std::string nombreNodo = toLowerCase(raiz->contacto.getNombre());
+  std::string nombreBuscado = toLowerCase(nombre);
 
-  if (lvshteinResult > 99.9) {
+  if (nombreNodo == nombreBuscado) {
     this->ultimaBusqueda
         .clear(); // Solo mostraremos el contacto exacto encontrado
     this->ultimaBusqueda.push_back(raiz->contacto);
     this->agregarRecientes(raiz->contacto);
-    // std::cout << "GOT IT" << std::endl;
+    std::cout << "GOT IT" << std::endl;
     return;
   }
 
+  double lvshteinResult =
+      distanciaLevenshtein(raiz->contacto.getNombre(), nombre);
+
   // En caso de no conseguir el contacto especifico, podemos mostrar los mas
   // parecidos (Fuzzy search)
-  if (lvshteinResult > 75.0) {
+  if (lvshteinResult > 40.0 ||
+      nombreNodo.find(nombreBuscado) != std::string::npos) {
     this->ultimaBusqueda.push_back(raiz->contacto);
   }
 
+  /*
   if (isLessThan(nombre, raiz->contacto.getNombre().c_str())) {
     consultar(raiz->nodoI, nombre);
   } else {
     consultar(raiz->nodoD, nombre);
   }
+  */
+
+  consultar(raiz->nodoI, nombre);
+  consultar(raiz->nodoD, nombre);
 
   return;
 }
@@ -285,6 +294,8 @@ double ArbolB::distanciaLevenshtein(std::string base, std::string destino) {
   std::string baseCI = toLowerCase(base);
   std::string destinoCI = toLowerCase(destino);
 
+  std::cout << "Comparando " << baseCI << " -> " << destinoCI << std::endl;
+
   for (int i = 1; i < a; i++) {
 
     for (int j = 1; j < b; j++) {
@@ -332,16 +343,16 @@ double ArbolB::distanciaLevenshtein(std::string base, std::string destino) {
   // Porcentaje. e.g. cadena.length = 8 -> 8 - 5(operaciones) = 3 -> 3 / 8 *
   // 100%
 
-  std::cout << "Longitud de cadena: " << base.length() << std::endl;
-  std::cout << "Numero de operaciones a realizar: " << operations[a - 1][b - 1]
-            << std::endl;
+  // std::cout << "Longitud de cadena: " << base.length() << std::endl;
+  // std::cout << "Numero de operaciones a realizar: " << operations[a - 1][b -
+  // 1] << std::endl;
 
   double result =
       (static_cast<double>((base.length() - operations[a - 1][b - 1])) /
        static_cast<double>(base.length())) *
       100.0;
 
-  std::cout << "Resultado DLevenshtein: " << result << std::endl;
+  // std::cout << "Resultado DLevenshtein: " << result << std::endl;
 
   return result;
 }
