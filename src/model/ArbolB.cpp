@@ -234,12 +234,9 @@ NodoContacto *ArbolB::subtreeBiggestLeft(std::unique_ptr<NodoContacto> &raiz) {
 
   NodoContacto *temp = raiz->nodoI.get();
 
-  while (temp != nullptr) {
+  while (temp != nullptr && temp->nodoD != nullptr) {
 
-    if (temp->nodoD != nullptr) {
-      temp = temp->nodoD.get();
-      continue;
-    }
+    temp = temp->nodoD.get();
   }
 
   return temp;
