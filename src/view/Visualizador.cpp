@@ -266,11 +266,22 @@ void Visualizador::crudLoop(ArbolB &directorio, ContactList &tabla) {
         std::string nombre;
         std::getline(std::cin, nombre);
 
+        Contact *contacto = directorio.existeContacto(nombre);
+        if (!contacto) {
+          std::cout << "[INFO] No se encontro ningun contacto. Ningun contacto "
+                       "ha sido eliminado."
+                    << std::endl;
+          break;
+        }
+
+        std::string emailAEliminar = contacto->getEmail();
+
         if (!directorio.eliminarContacto(nombre)) {
           std::cout << "[INFO] No se encontro ningun contacto. Ningun contacto "
                        "ha sido eliminado."
                     << std::endl;
         } else {
+          tabla.eliminarContacto(emailAEliminar);
           std::cout << "Contacto " << nombre << " eliminado" << std::endl;
         }
         GestorJSON::guardarArchivo("directorio.json", directorio);

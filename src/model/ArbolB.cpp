@@ -124,9 +124,9 @@ Contact *ArbolB::buscarContacto(std::unique_ptr<NodoContacto> &raiz,
   }
 
   if (isLessThan(nombre, raiz->contacto.getNombre())) {
-    buscarContacto(raiz->nodoI, nombre);
+    return buscarContacto(raiz->nodoI, nombre);
   } else {
-    buscarContacto(raiz->nodoD, nombre);
+    return buscarContacto(raiz->nodoD, nombre); 
   }
 
   return nullptr;
@@ -186,10 +186,10 @@ bool ArbolB::eliminar(std::unique_ptr<NodoContacto> &raiz, std::string nombre) {
   //           << std::endl;
 
   if (isLessThan(nombre, raiz->contacto.getNombre().c_str())) {
-    eliminar(raiz->nodoI, nombre);
+    return eliminar(raiz->nodoI, nombre);
   } else if (strcasecmp(nombre.c_str(), raiz->contacto.getNombre().c_str()) >
              0) {
-    eliminar(raiz->nodoD, nombre);
+    return eliminar(raiz->nodoD, nombre);
   } else {
 
     // Lo removemos de los contacto recientes en caso de encontrarse alli

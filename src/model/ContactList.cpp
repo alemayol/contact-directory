@@ -56,7 +56,7 @@ void ContactList::insertarContacto(std::string key, Contact contacto) {
   }
 
   if (!keyExists) {
-    tabla->emplace_back(key, contacto);
+    tabla[hashValue].emplace_back(key, contacto);
   }
 
   return;
