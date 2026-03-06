@@ -56,7 +56,7 @@ void ContactList::insertarContacto(std::string key, Contact contacto) {
   }
 
   if (!keyExists) {
-    tabla->emplace_back(key, contacto);
+    tabla[hashValue].emplace_back(key, contacto);
   }
 
   return;
@@ -116,13 +116,6 @@ Contact *ContactList::consultarContacto(std::string key) {
     }
   }
 
-  if (!keyExists) {
-
-    std::cout
-        << "[ADVERTENCIA] La llave no existe. Ningun contacto fue eliminado"
-        << std::endl;
-  }
-
   return nullptr;
 }
 
@@ -136,7 +129,7 @@ void ContactList::imprimirTabla() {
     auto itrNodo = tabla[i].begin();
 
     for (; itrNodo != tabla[i].end(); itrNodo++) {
-      std::cout << "[INFO] Key: " << itrNodo->first << std::endl;
+      // std::cout << "[INFO] Key: " << itrNodo->first << std::endl;
       itrNodo->second.imprimirInfo();
     }
   }

@@ -11,7 +11,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(nlohmann_json QUIET REQUIRED)
 
 
-add_executable(${PROJECT_NAME} main.cpp ./src/model/ContactList.cpp ./src/data/GestorJSON.cpp ./src/model/Nodo.cpp ./src/model/ArbolB.cpp ./src/model/Contact.cpp ./src/data/GestorCSV.cpp ./src/view/Visualizador.cpp)
+add_executable(${PROJECT_NAME} main.cpp ./src/model/ContactList.cpp ./src/data/GestorJSON.cpp  ./src/model/ArbolB.cpp ./src/model/Contact.cpp ./src/data/GestorCSV.cpp ./src/view/Visualizador.cpp)
 
 
 #Incluimos los headers para no usar paths relativos al importar
